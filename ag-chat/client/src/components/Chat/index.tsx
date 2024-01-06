@@ -1,74 +1,36 @@
-import { FC, useRef, useState } from 'react';
-import { Events } from '../types';
+import { FC } from 'react';
 import MessagesWindow from '../MessagesWindow';
+import useWebSocket from '../../hooks/useWebSocket';
+import SignIn from '../SignIn';
+import { CHAT_TEXT } from '../../dictionary';
 
 const Chat: FC = () => {
-    const [messages, setMessages] = useState<any[]>([]);
-    const [input, setInput] = useState('');
-    const [connected, setConnected] = useState<boolean>(false);
-    const [userName, setUserName] = useState<string>('');
-
-    const socket = useRef<WebSocket>();
-
-    const onConnect = () => {
-        socket.current = new WebSocket('ws://192.168.100.3:5000');
-
-        socket.current.onopen = () => {
-            const message = {
-                event: Events.Connection,
-                username: userName,
-                id: Date.now(),
-            };
-
-            setConnected(true);
-
-            socket.current?.send(JSON.stringify(message));
-
-            console.log('Подключение открыто');
-
-        }
-
-        socket.current.onmessage = (event: MessageEvent<string>) => {
-            const message = JSON.parse(event.data);
-
-            setMessages(prevMessages => [...prevMessages, message]);
-        }
-
-        socket.current.onclose = () => console.log('Socket закрыт');
-
-        socket.current.onerror = () => console.log('Произошла ошибка');
-    };
-
-    const sendMessage = () => {
-        const message = {
-            username: userName,
-            message: input,
-            id: Date.now(),
-            event: Events.Message,
-        };
-
-        socket.current?.send(JSON.stringify(message));
-
-        setInput('');
-    };
+    const {
+        connected,
+        messages,
+        input,
+        setInput,
+        sendMessage,
+        onConnect,
+        setUserName,
+        userName,
+    } = useWebSocket();
 
     return (
         <div className='chat_wrapper'>
             {(!connected) ? (
-                <div className='sign_form'>
-                    <div className='form_container'>
-                        <div className='form-title'>AG Chat</div>
-                        <input className='form-input' value={userName} onChange={e => setUserName(e.currentTarget.value)} type="text" placeholder='Введите имя' />
-                        <button className='button' onClick={onConnect}>Войти</button>
-                    </div>
-                </div>
+                <SignIn
+                    onConnectCallback={onConnect}
+                    setUserNameCallback={setUserName}
+                    userName={userName}
+                />
             ) : (
                 <div className='chat-container'>
                     <MessagesWindow messages={messages} />
 
                     <div className='send-message-section'>
-                        <input className='form-input' value={input} onChange={(e) => setInput(e.currentTarget.value)} type='text' placeholder='Написать сообщение...' />
-                        <button className='button' onClick={sendMessage}>Отправить</button>
+                        <input className='form-input' value={input} onChange={(e) => setInput(e.currentTarget.value)} type='text' placeholder={CHAT_TEXT.writeMessage} />
+                        <button className='button' onClick={sendMessage}>{CHAT_TEXT.send}</button>
                     </div>
                 </div>
             )}

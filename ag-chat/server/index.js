@@ -29,6 +29,7 @@ wss.on("connection", function connection(ws) {
         broadcastMessage(message);
 
         break;
+
       case Events.Connection:
         broadcastMessage(message);
 
