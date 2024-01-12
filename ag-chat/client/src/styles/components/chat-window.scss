@@ -1,0 +1,22 @@
+.chat_window_wrapper {
+    background-color: #262626;
+    max-width: 600px;
+    width: 100%;
+    overflow-y: auto;
+
+    .message_container {
+        padding: 10px;
+        background-color: #2d2d2d;
+        border-radius: 6px;
+        color: #fff;
+        max-width: max-content;
+        margin: 5px auto;
+        margin-right: 5px;
+        word-break: break-word;
+    }
+
+    .sign_in_notification {
+        text-align: center;
+        color: #9b9898;
+    }
+}

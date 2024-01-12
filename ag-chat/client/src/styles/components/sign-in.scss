@@ -1,0 +1,16 @@
+.sign_form {
+    .form_container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 0 auto;
+        max-width: 300px;
+        padding-top: 50vh;
+
+        .form-title {
+            color: #9b9898;
+            font-size: 24px;
+            text-align: center;
+        }
+    }
+}
