@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import MessagesWindow from '../MessagesWindow';
 import useWebSocket from '../../hooks/useWebSocket';
 import SignIn from '../SignIn';

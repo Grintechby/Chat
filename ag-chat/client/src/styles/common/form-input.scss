@@ -1,0 +1,15 @@
+.form-input {
+    background-color: #2d2d2d;
+    border: 1px solid #383838;
+    border-radius: 6px;
+    padding: 10px;
+    outline: none;
+    color: #fff;
+    text-align: center;
+    transition: .2s;
+
+    &:focus {
+        background-color: #1d1d1d;
+        border: 1px solid #5a5959;
+    }
+}

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { Events } from '../types';
 import MessageItem from './MessageItem';
 import { CHAT_TEXT } from '../../dictionary';
