@@ -10,7 +10,7 @@ export const useWebSocket = () => {
     const socket = useRef<WebSocket>();
 
     const onConnect = () => {
-        socket.current = new WebSocket('ws://192.168.100.3:5000');
+        socket.current = new WebSocket('ws://172.20.10.3:5000');
 
         socket.current.onopen = () => {
             const message = {
