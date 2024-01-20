@@ -10,7 +10,7 @@ export const useWebSocket = () => {
     const socket = useRef<WebSocket>();
 
     const onConnect = () => {
-        socket.current = new WebSocket('ws://172.20.10.3:5000');
+        socket.current = new WebSocket(`ws://${window.location.hostname}:5000`);
 
         socket.current.onopen = () => {
             const message = {
@@ -23,19 +23,25 @@ export const useWebSocket = () => {
 
             socket.current?.send(JSON.stringify(message));
 
-            console.log('Подключение открыто');
+            console.log('Connection open');
         };
 
         socket.current.onmessage = (event: MessageEvent<string>) => {
             const message = JSON.parse(event.data);
+
             setMessages((prevMessages) => [...prevMessages, message]);
         };
 
-        socket.current.onclose = () => console.log('Socket закрыт');
-        socket.current.onerror = () => console.log('Произошла ошибка');
+        socket.current.onclose = () => console.log('Socket closed');
+
+        socket.current.onerror = () => console.log('Error occurred');
     };
 
     const sendMessage = () => {
+        if (!input) {
+            return;
+        }
+
         const message = {
             username: userName,
             message: input,

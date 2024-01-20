@@ -7,19 +7,6 @@ const CssMinimizerWebpackPlugin = require("css-minimizer-webpack-plugin");
 
 const isDev = process.env.NODE_ENV === "development";
 
-const babelOptions = (presets) => {
-  const options = {
-    presets: ["@babel/preset-env"],
-    plugins: ["@babel/plugin-transform-runtime"],
-  };
-
-  if (presets) {
-    options.presets = options.presets.concat(presets);
-  }
-
-  return options;
-};
-
 module.exports = {
   mode: "development",
   entry: {
@@ -70,7 +57,7 @@ module.exports = {
       filename: "[name].[hash].css",
     }),
   ],
-  devtool: isDev ? "source-map" : "cheap-source-map",
+  devtool: isDev && "eval-source-map",
   devServer: {
     port: 3000,
     hot: isDev,
@@ -95,38 +82,18 @@ module.exports = {
         type: "asset/resource",
       },
       {
-        test: /\.m?js$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
-          options: babelOptions(),
-        },
-      },
-      {
-        test: /\.m?ts$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: babelOptions(["@babel/preset-typescript"]),
-        },
-      },
-      {
-        test: /\.jsx$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: babelOptions(["@babel/preset-react"]),
-        },
-      },
-      {
-        test: /\.tsx$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: babelOptions([
-            "@babel/preset-react",
-            "@babel/preset-typescript",
-          ]),
+          options: {
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+              "@babel/preset-typescript",
+            ],
+            plugins: ["@babel/plugin-transform-runtime"],
+          },
         },
       },
     ],
